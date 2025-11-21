@@ -40,6 +40,13 @@ int main()
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     httplib::Server svr;
+    // Allow CORS Preflight
+    svr.Options(".*", [](const httplib::Request &req, httplib::Response &res)
+                {
+    res.set_header("Access-Control-Allow-Origin", "*");
+    res.set_header("Access-Control-Allow-Headers", "*");
+    res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS"); });
+
     svr.set_default_headers({{"Access-Control-Allow-Origin", "*"},
                              {"Access-Control-Allow-Headers", "*"},
                              {"Access-Control-Allow-Methods", "GET, POST, OPTIONS"}});

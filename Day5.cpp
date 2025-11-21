@@ -40,7 +40,10 @@ int main()
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
     httplib::Server svr;
-    
+    svr.set_default_headers({{"Access-Control-Allow-Origin", "*"},
+                             {"Access-Control-Allow-Headers", "*"},
+                             {"Access-Control-Allow-Methods", "GET, POST, OPTIONS"}});
+
     //GetAll
 
     svr.Get("/all", [](const httplib::Request& req, httplib::Response& res)

@@ -41,11 +41,8 @@ int main()
 
     httplib::Server svr;
     // Allow CORS Preflight
-    svr.Options(".*", [](const httplib::Request &req, httplib::Response &res)
-                {
-    res.set_header("Access-Control-Allow-Origin", "*");
-    res.set_header("Access-Control-Allow-Headers", "*");
-    res.set_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS"); });
+    svr.Options(".*", [](const httplib::Request &, httplib::Response &res)
+                { res.status = 200; });
 
     svr.set_default_headers({{"Access-Control-Allow-Origin", "*"},
                              {"Access-Control-Allow-Headers", "*"},
@@ -57,7 +54,6 @@ int main()
     {
         json db = loadtojson();
         res.set_content(db.dump(4), "application/json");
-        res.set_header("Access-Control-Allow-Origin", "*");
     });
 
     //GetCount
@@ -77,7 +73,6 @@ int main()
         json out;
         out["count"] = db.size();
         res.set_content(out.dump(4), "application/json");
-        res.set_header("Access-Control-Allow-Origin", "*");
     });
 
     //Get Random Joke
@@ -90,7 +85,6 @@ int main()
             err["error"] = "Database is empty";
             res.status = 404;
             res.set_content(err.dump(4), "application/json");
-            res.set_header("Access-Control-Allow-Origin", "*");
             return;
         }
 
@@ -98,7 +92,6 @@ int main()
         int index = std::rand() % static_cast<int>(db.size());
         out = db[index];
         res.set_content(out.dump(4), "application/json");
-        res.set_header("Access-Control-Allow-Origin", "*");
     });
 
     std::cout << "Server starting on http:://localhost:8080\n";

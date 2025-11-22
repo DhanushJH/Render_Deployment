@@ -95,7 +95,7 @@ int main()
     });
 
     //Health - to keep the Render site alive from inactivity
-    svr.Get("/health", const []{httplib::Request &req, httplib::Response &res}
+    svr.Get("/health", []{const httplib::Request &req, httplib::Response &res}
     {
         res.set_content("{\"status\":\"ok\"}", "application/json");
     })
